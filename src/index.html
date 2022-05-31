@@ -1,6 +1,16 @@
-<div class="container ">
-    <h1 class="">
-      <i class="""></i> Book Keeper</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Book Keeper</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+  </head>
+  <body>
+  <div class="container">
+    <h1 class="text-center">
+      <i class="text-primary"></i> My<span class="text-primary">Book</span>List</h1>
       <form id="book-form">
         <div class="form-group">
           <label for="title">Title</label>
@@ -14,9 +24,9 @@
           <label for="isbn">ISBN#</label>
           <input type="text" id="isbn" class="form-control">
         </div>
-        <input type="submit" value="Add Book" class="btn btn-primary btn-block">
+        <input type="submit" value="Add Book" class="btn">
       </form>
-      <table class="table table-striped mt-5">
+      <table class="table">
         <thead>
           <tr>
             <th>Title</th>
@@ -28,3 +38,6 @@
         <tbody id="book-list"></tbody>
       </table>
   </div>
+  <script src="app.js"></script>
+  </body>
+</html>
