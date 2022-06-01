@@ -30,9 +30,9 @@ class Book {
         <td>${book.author}</td>
         <td>${book.isbn}</td>
         <td><button id="lend"> Lend </button></td>
-        <td><button id="return" disabled> Return</button> </td>
+        <td><button id="return" > Return</button> </td>
         <td><button class="btn btn-danger btn-sm delete">Delete</button></td>
-        <td><button id="lendingDetails" disabled>Lending Details</td>
+        <td><button id="lendingDetails" >Lending Details</td>
 
         
       `;
@@ -181,20 +181,28 @@ class Book {
     // Lend book 
     
     else if (e.target.id === 'lend'){
-      const lenderName = window.prompt('Lender name ?')    
-
-      // Add lender in store
+      if(e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent === 'N/A'){
+      const lenderName = window.prompt('Lender name ?')
+      if(lenderName){
+        // Add lender in store
       Store.addLender(e.target.parentElement.previousElementSibling.textContent,lenderName)
-
+      e.target.parentElement.nextElementSibling.firstChild.disabled = false
       // Display lender in UI
       UI.refreshPage()
-
+      }   else return 
+      
     }
+    else window.alert(`Book Unavailable in Library `)
+  }
     // Return Book
     else if (e.target.id === 'return'){
-      const confirmReturnBook = window.confirm('Are you sure book is returned ?')
+      if(e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent !== 'N/A'){
+        const confirmReturnBook = window.confirm('Are you sure book is returned ?')
       confirmReturnBook ? Store.removeLender(e.target.parentElement.previousElementSibling.previousElementSibling.textContent) : ''
       UI.refreshPage()
+      }
+      else window.alert('Book is still in Library and cannot be returned')
+      
     }
 
     // Display Lender Details
