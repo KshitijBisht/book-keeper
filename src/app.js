@@ -4,6 +4,7 @@ class Book {
       this.title = title;
       this.author = author;
       this.isbn = isbn;
+      this.available = true
     }
   }
   
@@ -21,10 +22,13 @@ class Book {
       const row = document.createElement('tr');
   
       row.innerHTML = `
+      <td>${book.available}</td> 
         <td>${book.title}</td>
         <td>${book.author}</td>
         <td>${book.isbn}</td>
         <td><a href="#" class="btn btn-danger btn-sm delete">X</a></td>
+        <td><button id="lend"> Lend </button></td>
+        <td><button id="return"> Return</button> </td>
       `;
   
       list.appendChild(row);
@@ -121,14 +125,27 @@ class Book {
     }
   });
   
-  // Event: Remove a Book
+  // Events: Remove, Lend or Return
   document.querySelector('#book-list').addEventListener('click', (e) => {
+
+    if(e.target.textContent === "X"){
     // Remove book from UI
     UI.deleteBook(e.target);
-  
     // Remove book from store
     Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
-  
+
     // Show success message
     UI.showAlert('Book Removed', 'success');
+    }
+
+    // Lend book 
+    
+    else if (e.target.id === 'lend'){
+
+    }
+    // Return Book
+    else if (e.target.id === 'return'){
+
+    }
+
   });
