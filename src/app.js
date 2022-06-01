@@ -4,7 +4,8 @@ class Book {
       this.title = title;
       this.author = author;
       this.isbn = isbn;
-      this.available = true
+      this.available = true;
+      this.lender = {name: '', id: '', lendingDate: null, returnDate: null}
     }
   }
   
@@ -12,8 +13,11 @@ class Book {
   class UI {
     static displayBooks() {
       const books = Store.getBooks();
-  
       books.forEach((book) => UI.addBookToList(book));
+    }
+
+    static refreshPage() {
+      window.location.reload()
     }
   
     static addBookToList(book) {
@@ -22,13 +26,16 @@ class Book {
       const row = document.createElement('tr');
   
       row.innerHTML = `
+      <td>${book.lender.name}</td>
       <td>${book.available}</td> 
         <td>${book.title}</td>
         <td>${book.author}</td>
         <td>${book.isbn}</td>
-        <td><a href="#" class="btn btn-danger btn-sm delete">X</a></td>
         <td><button id="lend"> Lend </button></td>
         <td><button id="return"> Return</button> </td>
+        <td><a href="#" class="btn btn-danger btn-sm delete">X</a></td>
+
+        
       `;
   
       list.appendChild(row);
@@ -89,6 +96,17 @@ class Book {
   
       localStorage.setItem('books', JSON.stringify(books));
     }
+    static addLender(isbn,lenderName){
+      const books = Store.getBooks();
+
+      books.forEach((book) => {
+        if(book.isbn === isbn) {
+          book.lender= {name: lenderName, id: lenderName, lendingDate: 'Today', returnDate: "to"}
+        }
+      });
+      localStorage.setItem('books', JSON.stringify(books));
+
+    }
   }
   
   // Event: Display Books
@@ -141,6 +159,13 @@ class Book {
     // Lend book 
     
     else if (e.target.id === 'lend'){
+      const lenderName = window.prompt('Lender name ?')    
+
+      // Add lender in store
+      Store.addLender(e.target.parentElement.previousElementSibling.textContent,lenderName)
+
+      // Display lender in UI
+      UI.refreshPage()
 
     }
     // Return Book
