@@ -4,8 +4,7 @@ class Book {
       this.title = title;
       this.author = author;
       this.isbn = isbn;
-      this.available = true;
-      this.lender = {name: '', id: '', lendingDate: null, returnDate: null}
+      this.lender = {name: 'N/A', id: '', lendingDate: null, returnDate: null}
     }
   }
   
@@ -27,13 +26,13 @@ class Book {
   
       row.innerHTML = `
       <td>${book.lender.name}</td>
-      <td>${book.available}</td> 
         <td>${book.title}</td>
         <td>${book.author}</td>
         <td>${book.isbn}</td>
         <td><button id="lend"> Lend </button></td>
-        <td><button id="return"> Return</button> </td>
-        <td><a href="#" class="btn btn-danger btn-sm delete">X</a></td>
+        <td><button id="return" disabled> Return</button> </td>
+        <td><button class="btn btn-danger btn-sm delete">Delete</button></td>
+        <td><button id="lendingDetails" disabled>Lending Details</td>
 
         
       `;
@@ -63,6 +62,16 @@ class Book {
       document.querySelector('#title').value = '';
       document.querySelector('#author').value = '';
       document.querySelector('#isbn').value = '';
+    }
+
+    static displayLenderDetails(isbn){
+      const books = Store.getBooks();
+      books.forEach((book) => {
+        if(book.isbn === isbn) {
+          window.alert(`Book taken by ${book.lender.name} on ${book.lender.lendingDate}`)
+        }
+      });
+
     }
   }
   
@@ -96,16 +105,29 @@ class Book {
   
       localStorage.setItem('books', JSON.stringify(books));
     }
+
+  
     static addLender(isbn,lenderName){
       const books = Store.getBooks();
 
       books.forEach((book) => {
         if(book.isbn === isbn) {
-          book.lender= {name: lenderName, id: lenderName, lendingDate: 'Today', returnDate: "to"}
+          book.lender= {name: lenderName, id: lenderName, lendingDate: new Date().toLocaleDateString(), returnDate: null}
         }
       });
       localStorage.setItem('books', JSON.stringify(books));
 
+    }
+
+    static removeLender(isbn){
+      const books = Store.getBooks();
+
+      books.forEach((book) => {
+        if(book.isbn === isbn) {
+          book.lender= {name: 'N/A', id: '', lendingDate: null, returnDate: new Date().toLocaleDateString()}
+        }
+      });
+      localStorage.setItem('books', JSON.stringify(books));
     }
   }
   
@@ -146,7 +168,7 @@ class Book {
   // Events: Remove, Lend or Return
   document.querySelector('#book-list').addEventListener('click', (e) => {
 
-    if(e.target.textContent === "X"){
+    if(e.target.textContent === "Delete"){
     // Remove book from UI
     UI.deleteBook(e.target);
     // Remove book from store
@@ -170,7 +192,15 @@ class Book {
     }
     // Return Book
     else if (e.target.id === 'return'){
+      const confirmReturnBook = window.confirm('Are you sure book is returned ?')
+      confirmReturnBook ? Store.removeLender(e.target.parentElement.previousElementSibling.previousElementSibling.textContent) : ''
+      UI.refreshPage()
+    }
 
+    // Display Lender Details
+     
+    else if (e.target.id === 'lendingDetails'){
+      UI.displayLenderDetails(e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent)
     }
 
   });
