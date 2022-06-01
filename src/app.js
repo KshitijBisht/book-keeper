@@ -208,7 +208,10 @@ class Book {
     // Display Lender Details
      
     else if (e.target.id === 'lendingDetails'){
-      UI.displayLenderDetails(e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent)
+      if(e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent !== 'N/A'){
+        UI.displayLenderDetails(e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent)
+      }
+      else window.alert('Book is still in Library')
     }
 
   });
