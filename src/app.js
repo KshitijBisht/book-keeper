@@ -1,3 +1,4 @@
+
 // Book Class: Represents a Book
 class Book {
     constructor(title, author, isbn) {
@@ -8,6 +9,7 @@ class Book {
     }
   }
   
+
   // UI Class: Handle UI Tasks
   class UI {
     static displayBooks() {
@@ -19,9 +21,10 @@ class Book {
       window.location.reload()
     }
   
+    // write a new book to DOM on adding new book
+
     static addBookToList(book) {
       const list = document.querySelector('#book-list');
-  
       const row = document.createElement('tr');
   
       row.innerHTML = `
@@ -32,9 +35,7 @@ class Book {
         <td><button id="lend"> Lend </button></td>
         <td><button id="return" > Return</button> </td>
         <td><button class="btn btn-danger btn-sm delete">Delete</button></td>
-        <td><button id="lendingDetails" >Lending Details</td>
-
-        
+        <td><button id="lendingDetails" >Lending Details</td>        
       `;
   
       list.appendChild(row);
@@ -53,7 +54,6 @@ class Book {
       const container = document.querySelector('.container');
       const form = document.querySelector('#book-form');
       container.insertBefore(div, form);
-  
       // Vanish in 3 seconds
       setTimeout(() => document.querySelector('.alert').remove(), 3000);
     }
@@ -169,12 +169,8 @@ class Book {
   document.querySelector('#book-list').addEventListener('click', (e) => {
 
     if(e.target.textContent === "Delete"){
-    // Remove book from UI
     UI.deleteBook(e.target);
-    // Remove book from store
     Store.removeBook(e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.textContent);
-
-    // Show success message
     UI.showAlert('Book Removed', 'success');
     }
 
